@@ -1,5 +1,5 @@
 import React from "react"
-import { Redirect } from 'react-router'
+import firebase from "../base"
 
 class Register extends React.Component {
     constructor(props) {

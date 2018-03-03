@@ -1,17 +1,10 @@
 import React from "react"
 
 class Expense extends React.Component {
-    constructor(props) {
-      	super(props);
-      	this.state = {};
-    }
-  
     render() {
-		return (
-			<div>
-			
-			</div>
-		);
+        return (
+            <h1>Expense page</h1>
+        )
     }
 }
 
