@@ -1,7 +1,7 @@
 import React from "react"
 import { Redirect } from "react-router-dom"
 import { Spinner } from '@blueprintjs/core'
-import firebase from "../base"
+import firebase from "../../base"
 
 class Logout extends React.Component {
     constructor(props) {

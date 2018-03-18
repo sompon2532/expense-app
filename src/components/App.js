@@ -1,17 +1,19 @@
 import React from "react"
-import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
-import { Spinner } from "@blueprintjs/core"
-import firebase from "./base"
+import { BrowserRouter, Route, Redirect, Link, Switch } from "react-router-dom"
+import Loading from "./blueprint/Loading"
+import firebase from "../base"
 
-import Login from "../components/auth/Login"
-import Register from "../components/auth/Register"
-import Logout from "../components/auth/Logout"
-import Expense from "../components/expense/Expense"
+import Login from "./auth/Login"
+import Register from "./auth/Register"
+import Logout from "./auth/Logout"
+import Home from "./home/Home"
+import Expense from "./expense/Expense"
+import Teacher from "./teacher/Teacher"
 
 const AuthenticatedRoute = ({ component: Component, authenticated, ...rest }) => {
     return (
         <Route
-            render={(props) => authenticated === true
+            render={(props) => authenticated == true
                 ? <Component {...props} {...rest} />
                 : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />} />
     )
@@ -66,34 +68,46 @@ class App extends React.Component {
 
     render() {
         if (this.state.loading === true) {
-            return (
-                <div style={{ textAlign: "center", position: "absolute", top: "25%", left: "50%" }}>
-                    <h3>Loading</h3>
-                    <Spinner />
-                </div>
-            )
+            return (<Loading />)
         }
 
         return (
             <div>
-                <h1>Expense app</h1>
-                <Router>
-                    <Switch>
-                        <Route exact path="/login" render={(props) => {
-                            return <Login setCurrentUser={this.setCurrentUser} {...props} />
-                        }} />
-                        <Route exact path="/register" render={(props) => {
-                            return <Register {...props} />
-                        }} />
-                        <Route exact path="/logout" component={Logout} />
-                        <AuthenticatedRoute
-                            exact
-                            path="/expense"
-                            authenticated={this.state.authenticated}
-                            component={Expense}
-                        />
-                    </Switch>
-                </Router>
+                <h1>App</h1>
+                <BrowserRouter>
+                    <div>
+                        <ul>
+                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/expense">Expense</Link></li>
+                            <li><Link to="/teacher">Teacher</Link></li>
+                            <li><Link to="/teacher/add">Add teacher</Link></li>
+                            <li><Link to="/login">Login</Link></li>
+                            <li><Link to="/register">Register</Link></li>
+                            <li><Link to="/logout">Logout</Link></li>
+                        </ul>
+
+                        <Switch>
+                            <Route exact path="/" component={Home}/>
+                            <Route path="/login" render={(props) => {
+                                return <Login setCurrentUser={this.setCurrentUser} {...props} />
+                            }} />
+                            <Route path="/register" render={(props) => {
+                                return <Register {...props} />
+                            }} />
+                            <Route path="/logout" component={Logout} />
+                            <AuthenticatedRoute
+                                path="/expense"
+                                authenticated={this.state.authenticated}
+                                component={Expense}
+                            />
+                            <AuthenticatedRoute
+                                path="/teacher"
+                                authenticated={this.state.authenticated}
+                                component={Teacher}
+                            />
+                        </Switch>
+                    </div>
+                </BrowserRouter>
             </div>
         )
     }

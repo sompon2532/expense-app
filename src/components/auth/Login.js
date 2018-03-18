@@ -1,7 +1,7 @@
 import React from "react"
 import { Redirect } from 'react-router-dom'
-import { Spinner } from '@blueprintjs/core'
-import firebase from "../base"
+import Loading from "../blueprint/Loading"
+import firebase from "../../base"
 
 class Login extends React.Component {
     constructor(props) {
@@ -10,7 +10,7 @@ class Login extends React.Component {
 			email: '',
 			password: '',
 			redirectToReferrer: false,
-			loading: false
+			loading: false,
 		}
 
 		this.handleChange = this.handleChange.bind(this)
@@ -26,16 +26,23 @@ class Login extends React.Component {
 	handleSubmit(event) {
 		let email = this.state.email
 		let password = this.state.password
+		
+		this.setState({
+			loading: true
+		})
 
 		let user = firebase.auth().signInWithEmailAndPassword(email, password)
 		.then((user) => {
 			this.setState({
 				['loading']: true
 			})
+
 			this.props.setCurrentUser(user)
+
 			this.setState({
-				['redirectToReferrer']: true
+				['redirectToReferrer']: true,
 			})
+
 		})
 		.catch(function(error) {
 			// Handle Errors here.
@@ -55,6 +62,10 @@ class Login extends React.Component {
 		
 		if (this.state.redirectToReferrer === true) {
 			return (<Redirect to={from} />)
+		}
+
+		if (this.state.loading === true) {
+			return (<Loading />)
 		}
 		
         return (
@@ -76,7 +87,7 @@ class Login extends React.Component {
 					</div>
 				</form>
 			</div>
-        );
+        )
     }
 }
 

@@ -1,5 +1,5 @@
 import React from "react"
-import firebase from "../base"
+import firebase from "../../base"
 
 class Register extends React.Component {
     constructor(props) {
